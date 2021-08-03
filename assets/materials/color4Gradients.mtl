@@ -1,0 +1,47 @@
+{
+  "__type__": "cc.Material",
+  "_name": "color4Gradients",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "926d0dee-1fed-4988-be69-62b42e174293"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "RT": {
+          "__type__": "cc.Color",
+          "r": 247,
+          "g": 218,
+          "b": 15,
+          "a": 255
+        },
+        "LT": {
+          "__type__": "cc.Color",
+          "r": 247,
+          "g": 218,
+          "b": 15,
+          "a": 255
+        },
+        "RB": {
+          "__type__": "cc.Color",
+          "r": 210,
+          "g": 51,
+          "b": 0,
+          "a": 255
+        },
+        "LB": {
+          "__type__": "cc.Color",
+          "r": 210,
+          "g": 51,
+          "b": 0,
+          "a": 255
+        }
+      }
+    }
+  }
+}

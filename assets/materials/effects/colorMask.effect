@@ -1,0 +1,89 @@
+
+CCEffect %{
+techniques: 
+  - passes: 
+      - vert: vs
+        frag: fs
+        blendState: 
+          targets: 
+            - blend: true
+        rasterizerState: 
+          cullMode: none
+        properties: 
+          texture: 
+            value: white
+          maskColor: 
+            value: 
+              - 1.000
+              - 1.000
+              - 1.000
+              - 1.000
+            inspector: 
+              type: color
+          range: 
+            value: 0.0
+          fuzziness: 
+            value: 0.0001
+}%
+        
+CCProgram vs %{
+    precision highp float;
+    #include <cc-global>
+    #include <cc-local>
+
+    in vec3 a_position;
+    #if USE_TEXTURE
+        in vec2 a_uv0;
+        out vec2 v_uv0;
+    #endif  
+    in vec4 a_color;
+    out vec4 v_color;
+
+    void main () {
+        mat4 mvp;
+        #if CC_USE_MODEL
+            mvp = cc_matViewProj * cc_matWorld;
+        #else
+            mvp = cc_matViewProj;
+        #endif
+
+        #if USE_TEXTURE
+            v_uv0 = a_uv0;
+        #endif
+
+        #if USE_TINT
+            // clear warning for spine
+        #endif
+
+        v_color = a_color;
+        gl_Position = mvp * vec4(a_position, 1);
+    }
+}%
+        
+CCProgram fs %{
+    precision highp float;
+    #include <cc-global>
+    #if USE_TEXTURE
+        in vec2 v_uv0;
+        uniform sampler2D texture;
+    #endif
+    in vec4 v_color;
+    uniform Constant {
+		vec4 color;
+		vec4 maskColor;
+		float range;
+		float fuzziness;
+	};
+
+     // 当Fuzziness很小，接近0时；Color中的MaskColor会变白色，其他颜色变黑，Range可以控制MaskColor在一定范围内，这样与MaskColor颜色接近的坐标也会变白
+    vec4 c_ColorMask_main_3 (vec4 Color, vec4 MaskColor, float Range, float Fuzziness) {
+	   float Distance = distance(MaskColor, Color);
+	   return vec4(clamp(1.0 - (Distance - Range) / max(Fuzziness, 1e-5), 0.0, 1.0));
+	}
+	void main()                                    
+	{                                              
+	    vec4 out_Color_ColorMask_3 = c_ColorMask_main_3(texture2D(texture, v_uv0), vec4(maskColor), range, fuzziness);
+	    gl_FragColor = out_Color_ColorMask_3;
+	}
+}%
+        

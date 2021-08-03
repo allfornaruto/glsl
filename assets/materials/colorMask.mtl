@@ -1,0 +1,28 @@
+{
+  "__type__": "cc.Material",
+  "_name": "colorMask",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "ccddaa47-7ccd-4086-8182-0c1c79aacda8"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "maskColor": {
+          "__type__": "cc.Color",
+          "r": 247,
+          "g": 210,
+          "b": 17,
+          "a": 255
+        },
+        "range": 0.15,
+        "fuzziness": 0.01
+      }
+    }
+  }
+}
