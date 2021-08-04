@@ -1,0 +1,17 @@
+{
+  "ver": "1.0.25",
+  "uuid": "750bc0d3-b970-491c-9c1c-3655a2d20e75",
+  "compiledShaders": [
+    {
+      "glsl1": {
+        "vert": "\nprecision highp float;\nuniform mat4 cc_matViewProj;\nuniform mat4 cc_matWorld;\nattribute vec3 a_position;\n#if USE_TEXTURE\n    attribute vec2 a_uv0;\n    varying vec2 v_uv0;\n#endif\nattribute vec4 a_color;\nvarying vec4 v_color;\nvoid main () {\n    mat4 mvp;\n    #if CC_USE_MODEL\n        mvp = cc_matViewProj * cc_matWorld;\n    #else\n        mvp = cc_matViewProj;\n    #endif\n    #if USE_TEXTURE\n        v_uv0 = a_uv0;\n    #endif\n    #if USE_TINT\n    #endif\n    v_color = a_color;\n    gl_Position = mvp * vec4(a_position, 1);\n}",
+        "frag": "\n  precision highp float;\n  #if USE_TEXTURE\n      varying vec2 v_uv0;\n      uniform sampler2D texture;\n  #endif\n  varying vec4 v_color;\n  uniform vec4 from;\nuniform vec4 to;\nuniform float range;\nuniform float fuzziness;\n  vec4 c_ColorReplace_main_4 (vec4 Color, vec4 From, vec4 To, float Range, float Fuzziness) {\n   float Distance = distance(From, Color);\n   return mix(To, Color, clamp((Distance - Range) / max(Fuzziness, -10000.0), 0.0, 1.0));\n}\nvec4 c_Output_main_1(vec4 Color) {\n    return Color;\n}\nvoid main()\n{\n    vec4 out_Color_ColorReplace_4 = c_ColorReplace_main_4(texture2D(texture, v_uv0), vec4(from), vec4(to), range, fuzziness);\n    gl_FragColor = c_Output_main_1(vec4(out_Color_ColorReplace_4));\n}"
+      },
+      "glsl3": {
+        "vert": "\nprecision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\nuniform CCLocal {\n  mat4 cc_matWorld;\n  mat4 cc_matWorldIT;\n};\nin vec3 a_position;\n#if USE_TEXTURE\n    in vec2 a_uv0;\n    out vec2 v_uv0;\n#endif\nin vec4 a_color;\nout vec4 v_color;\nvoid main () {\n    mat4 mvp;\n    #if CC_USE_MODEL\n        mvp = cc_matViewProj * cc_matWorld;\n    #else\n        mvp = cc_matViewProj;\n    #endif\n    #if USE_TEXTURE\n        v_uv0 = a_uv0;\n    #endif\n    #if USE_TINT\n    #endif\n    v_color = a_color;\n    gl_Position = mvp * vec4(a_position, 1);\n}",
+        "frag": "\n  precision highp float;\nuniform CCGlobal {\n  mat4 cc_matView;\n  mat4 cc_matViewInv;\n  mat4 cc_matProj;\n  mat4 cc_matProjInv;\n  mat4 cc_matViewProj;\n  mat4 cc_matViewProjInv;\n  vec4 cc_cameraPos;\n  vec4 cc_time;\n  mediump vec4 cc_screenSize;\n  mediump vec4 cc_screenScale;\n};\n  #if USE_TEXTURE\n      in vec2 v_uv0;\n      uniform sampler2D texture;\n  #endif\n  in vec4 v_color;\n  uniform Constant {\n  vec4 from;\n  vec4 to;\n  float range;\n  float fuzziness;\n};\n  vec4 c_ColorReplace_main_4 (vec4 Color, vec4 From, vec4 To, float Range, float Fuzziness) {\n   float Distance = distance(From, Color);\n   return mix(To, Color, clamp((Distance - Range) / max(Fuzziness, -10000.0), 0.0, 1.0));\n}\nvec4 c_Output_main_1(vec4 Color) {\n    return Color;\n}\nvoid main()\n{\n    vec4 out_Color_ColorReplace_4 = c_ColorReplace_main_4(texture2D(texture, v_uv0), vec4(from), vec4(to), range, fuzziness);\n    gl_FragColor = c_Output_main_1(vec4(out_Color_ColorReplace_4));\n}"
+      }
+    }
+  ],
+  "subMetas": {}
+}

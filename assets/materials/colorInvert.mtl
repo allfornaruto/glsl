@@ -1,0 +1,23 @@
+{
+  "__type__": "cc.Material",
+  "_name": "colorInvert",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "06c4a62a-ab87-496d-a4da-a950ec2080e0"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "u_invertA_3": false,
+        "u_invertB_3": true,
+        "u_invertG_3": true,
+        "u_invertR_3": true
+      }
+    }
+  }
+}

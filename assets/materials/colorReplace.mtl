@@ -1,0 +1,35 @@
+{
+  "__type__": "cc.Material",
+  "_name": "colorReplace",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "750bc0d3-b970-491c-9c1c-3655a2d20e75"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "from": {
+          "__type__": "cc.Color",
+          "r": 44,
+          "g": 24,
+          "b": 15,
+          "a": 255
+        },
+        "to": {
+          "__type__": "cc.Color",
+          "r": 76,
+          "g": 254,
+          "b": 0,
+          "a": 0
+        },
+        "fuzziness": 0.005,
+        "range": 0.065
+      }
+    }
+  }
+}
