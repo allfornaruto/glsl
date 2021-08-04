@@ -1,0 +1,82 @@
+
+CCEffect %{
+techniques: 
+  - passes: 
+      - vert: vs
+        frag: fs
+        blendState: 
+          targets: 
+            - blend: true
+        rasterizerState: 
+          cullMode: none
+        properties: 
+          texture: 
+            value: white
+}%
+        
+CCProgram vs %{
+    precision highp float;
+    #include <cc-global>
+    #include <cc-local>
+
+    in vec3 a_position;
+    #if USE_TEXTURE
+        in vec2 a_uv0;
+        out vec2 v_uv0;
+    #endif  
+    in vec4 a_color;
+    out vec4 v_color;
+
+    void main () {
+        mat4 mvp;
+        #if CC_USE_MODEL
+            mvp = cc_matViewProj * cc_matWorld;
+        #else
+            mvp = cc_matViewProj;
+        #endif
+
+        #if USE_TEXTURE
+            v_uv0 = a_uv0;
+        #endif
+
+        #if USE_TINT
+            // clear warning for spine
+        #endif
+
+        v_color = a_color;
+        gl_Position = mvp * vec4(a_position, 1);
+    }
+}%
+        
+CCProgram fs %{
+    precision highp float;
+    #include <cc-global>
+    #if USE_TEXTURE
+        in vec2 v_uv0;
+        uniform sampler2D texture;
+    #endif
+    in vec4 v_color;
+    uniform Constant {
+	};
+
+    vec4 c_ColorLinear2RGB_main_4 (vec4 Color) {
+	    vec3 sRGBLo = Color.rgb * 12.92;
+	    vec3 sRGBHi = (pow(max(abs(Color.rgb), 1.192092896e-07), vec3(1.0 / 2.4, 1.0 / 2.4, 1.0 / 2.4)) * 1.055) - 0.055;
+	    return vec4( 
+	        Color.r <= 0.0031308 ? sRGBLo.r : sRGBHi.r, 
+	        Color.g <= 0.0031308 ? sRGBLo.g : sRGBHi.g, 
+	        Color.b <= 0.0031308 ? sRGBLo.b : sRGBHi.b, 
+	        Color.a
+	    );
+	}
+	vec4 c_Output_main_1(vec4 Color) { 
+	    return Color; 
+	}
+	void main()                                    
+	{                                              
+	    vec4 out_Color_ColorLinear2RGB_4 = c_ColorLinear2RGB_main_4(texture2D(texture, v_uv0));
+	    gl_FragColor = c_Output_main_1(vec4(out_Color_ColorLinear2RGB_4));
+	}                                              
+	
+}%
+        

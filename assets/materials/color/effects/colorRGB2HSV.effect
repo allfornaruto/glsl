@@ -1,0 +1,80 @@
+
+CCEffect %{
+techniques: 
+  - passes: 
+      - vert: vs
+        frag: fs
+        blendState: 
+          targets: 
+            - blend: true
+        rasterizerState: 
+          cullMode: none
+        properties: 
+          texture: 
+            value: white
+}%
+        
+CCProgram vs %{
+    precision highp float;
+    #include <cc-global>
+    #include <cc-local>
+
+    in vec3 a_position;
+    #if USE_TEXTURE
+        in vec2 a_uv0;
+        out vec2 v_uv0;
+    #endif  
+    in vec4 a_color;
+    out vec4 v_color;
+
+    void main () {
+        mat4 mvp;
+        #if CC_USE_MODEL
+            mvp = cc_matViewProj * cc_matWorld;
+        #else
+            mvp = cc_matViewProj;
+        #endif
+
+        #if USE_TEXTURE
+            v_uv0 = a_uv0;
+        #endif
+
+        #if USE_TINT
+            // clear warning for spine
+        #endif
+
+        v_color = a_color;
+        gl_Position = mvp * vec4(a_position, 1);
+    }
+}%
+        
+CCProgram fs %{
+    precision highp float;
+    #include <cc-global>
+    #if USE_TEXTURE
+        in vec2 v_uv0;
+        uniform sampler2D texture;
+    #endif
+    in vec4 v_color;
+    uniform Constant {
+	};
+
+    vec4 c_ColorRGB2HSV_main_5 (vec4 Color) {
+	    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+	    vec4 P = mix(vec4(Color.bg, K.wz), vec4(Color.gb, K.xy), step(Color.b, Color.g));
+	    vec4 Q = mix(vec4(P.xyw, Color.r), vec4(Color.r, P.yzx), step(P.x, Color.r));
+	    float D = Q.x - min(Q.w, Q.y);
+	    float E = 1e-10;
+	    return vec4(abs(Q.z + (Q.w - Q.y) / (6.0 * D + E)), D / (Q.x + E), Q.x, Color.a);
+	}
+	vec4 c_Output_main_1(vec4 Color) { 
+	    return Color; 
+	}
+	void main()                                    
+	{                                              
+	    vec4 out_Color_ColorRGB2HSV_5 = c_ColorRGB2HSV_main_5(texture2D(texture, v_uv0));
+	    gl_FragColor = c_Output_main_1(vec4(out_Color_ColorRGB2HSV_5));
+	}                                              
+	
+}%
+        
