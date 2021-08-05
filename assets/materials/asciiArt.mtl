@@ -1,0 +1,24 @@
+{
+  "__type__": "cc.Material",
+  "_name": "asciiArt",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "55c9da65-b3f5-42d6-813c-e82caaa656e8"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true
+      },
+      "props": {
+        "uSize": {
+          "__type__": "cc.Vec2",
+          "x": 8000,
+          "y": 8000
+        }
+      }
+    }
+  }
+}
